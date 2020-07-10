@@ -1,0 +1,19 @@
+{
+	"name": "PHP 7.3-rdev",
+	"dockerFile": "Dockerfile",
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"extensions": [
+        "ms-azuretools.vscode-docker",
+		"arturock.gitstash",
+        "ue.alphabetical-sorter",
+        "bmewburn.vscode-intelephense-client",
+        "sibiraj-s.vscode-scss-formatter",
+        "redhat.vscode-yaml",
+        "dunstontc.vscode-gitignore-syntax",
+        "thenouillet.symfony-vscode"
+	],
+	"postCreateCommand": "php -v",
+    "remoteUser": "vscode"
+}
