@@ -1,0 +1,24 @@
+{
+    "name": "deviscoding/prefer",
+    "description": "CLI utility that allows the configuration of the MacOS dock from a configuration file.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DevCoding\\Mac\\": "src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aaron J",
+            "email": "aaron@jonesicoding.com"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "symfony/yaml": "^4.4",
+        "symfony/console": "^4.4",
+        "jonesiscoding/base-console": "^1.0",
+        "rodneyrehm/plist": "^2.0"
+    }
+}
