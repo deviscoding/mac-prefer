@@ -11,6 +11,10 @@
       "name": "*.php",
       "exclude": ["Tests"],
       "in": "vendor"
+    },
+    {
+      "name": "cc.json",
+      "in": "resources/config"
     }
   ],
   "git-version": "package_version",

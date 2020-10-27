@@ -14,9 +14,10 @@
             "email": "aaron@jonesicoding.com"
         }
     ],
-    "version": "1.0",
+    "version": "1.2",
     "require": {
         "ext-json": "*",
+        "ext-posix": "*",
         "symfony/yaml": "^4.4",
         "symfony/console": "^4.4",
         "jonesiscoding/base-console": "^1.0",

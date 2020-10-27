@@ -1,0 +1,41 @@
+{
+  "illustrator": {
+    "sap": "ILST",
+    "names": [ "Illustrator", "Illustrator CC" ],
+    "preferences": ["Library/Preferences/Adobe Illustrator {version}"],
+    "path": "Adobe Illustrator {year}/Adobe Illustrator.app",
+    "baseVersions": {
+      "22.0": "2018",
+      "23.0": "2019",
+      "24.0": "2020",
+      "25.0": "2021"
+    }
+  },
+  "indesign": {
+    "sap": "IDSN",
+    "names": [ "InDesign", "InDesign CC" ],
+    "path": "Adobe InDesign {year}/Adobe InDesign {year}.app",
+    "preferences": ["Library/Preferences/Adobe InDesign/Version {version}"],
+    "baseVersions": {
+      "13.0": "2018",
+      "14.0": "2019",
+      "15.0": "2020",
+      "16.0": "2021"
+    }
+  },
+  "photoshop": {
+    "sap": "PSHP",
+    "names": [ "Photoshop", "Photoshop CC" ],
+    "path": "Adobe {name} {year}/Adobe {name} {year}.app",
+    "preferences": [
+      "Library/Preferences/Adobe {name} {year} Settings",
+      "Library/Preferences/Adobe {name} {year} Paths"
+    ],
+    "baseVersions": {
+      "13.0": "2018",
+      "14.0": "2019",
+      "15.0": "2020",
+      "16.0": "2021"
+    }
+  }
+}
