@@ -35,6 +35,8 @@ class CreativeCloudApp implements \JsonSerializable {
   protected $year;
   /** @var string */
   protected $name;
+  /** @var string */
+  protected $version;
 
   /**
    * {@inheritDoc}
@@ -49,6 +51,7 @@ class CreativeCloudApp implements \JsonSerializable {
         'path'        => $this->getPath(),
         'year'        => $this->getYear(),
         'baseVersion' => $this->getBaseVersion(),
+        'version'     => $this->getVersion(),
         'uninstall'   => $this->getUninstall()
     ];
   }
@@ -129,6 +132,28 @@ class CreativeCloudApp implements \JsonSerializable {
     }
 
     return $this->baseVersion;
+  }
+
+  /**
+   * @return string
+   */
+  public function getVersion()
+  {
+    if (empty($this->version))
+    {
+      if ($path = $this->getPath())
+      {
+        $plist = sprintf("%s/Contents/Info.plist", $path);
+        $cmd = sprintf('/usr/bin/defaults read "%s" CFBundleVersion', $plist);
+
+        if ($bundleVersion = shell_exec($cmd))
+        {
+          $this->version = trim($bundleVersion);
+        }
+      }
+    }
+
+    return $this->version;
   }
 
   /**

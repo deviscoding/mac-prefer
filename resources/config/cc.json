@@ -2,8 +2,8 @@
   "illustrator": {
     "sap": "ILST",
     "names": [ "Illustrator", "Illustrator CC" ],
-    "preferences": ["Library/Preferences/Adobe Illustrator {version}"],
-    "path": "Adobe Illustrator {year}/Adobe Illustrator.app",
+    "preferences": ["Library/Preferences/Adobe Illustrator {baseVersion}"],
+    "path": "Adobe {name} {year}/Adobe Illustrator.app",
     "baseVersions": {
       "22.0": "2018",
       "23.0": "2019",
@@ -14,8 +14,8 @@
   "indesign": {
     "sap": "IDSN",
     "names": [ "InDesign", "InDesign CC" ],
-    "path": "Adobe InDesign {year}/Adobe InDesign {year}.app",
-    "preferences": ["Library/Preferences/Adobe InDesign/Version {version}"],
+    "path": "Adobe {name} {year}/Adobe {name} {year}.app",
+    "preferences": ["Library/Preferences/Adobe InDesign/Version {baseVersion}"],
     "baseVersions": {
       "13.0": "2018",
       "14.0": "2019",
@@ -32,10 +32,62 @@
       "Library/Preferences/Adobe {name} {year} Paths"
     ],
     "baseVersions": {
-      "13.0": "2018",
-      "14.0": "2019",
-      "15.0": "2020",
-      "16.0": "2021"
+      "19.0": "2018",
+      "20.0": "2019",
+      "21.0": "2020",
+      "22.0": "2021"
+    }
+  },
+  "bridge": {
+    "sap": "PPRO",
+    "names": [ "Bridge", "Bridge CC" ],
+    "path": "Adobe {name} {year}/Adobe Bridge {year}.app",
+    "preferences": [
+      "Library/Preferences/Adobe/Bridge/{version}",
+      "Library/Preferences/com.adobe.bridge{major}.plist"
+    ],
+    "baseVersions": {
+      "8.0": "2018",
+      "9.0": "2019",
+      "10.0": "2020",
+      "11.0": "2021"
+    }
+  },
+  "after-effects": {
+    "sap": "AEFT",
+    "names": [ "After Effects", "After Effects CC" ],
+    "path": "Adobe {name} {year}/Adobe {name} {year}.app",
+    "preferences": ["Library/Preferences/Adobe/After Effects/{baseVersion}"],
+    "baseVersions": {
+      "15.0": "2018",
+      "16.0": "2019",
+      "17.0": "2020"
+    }
+  },
+  "animate": {
+    "sap": "FLPR",
+    "names": [ "Animate", "Animate CC" ],
+    "path": "Adobe {name} {year}/Adobe Animate {year}.app",
+    "preferences": [
+      "Library/Preferences/Adobe/Animate/{year}",
+      "Library/Preferences/Adobe/Animate Common/"
+    ],
+    "baseVersions": {
+      "18.0": "2018",
+      "19.0": "2019",
+      "20.0": "2020",
+      "21.0": "2021"
+    }
+  },
+  "premiere-pro": {
+    "sap": "PPRO",
+    "names": [ "Premiere Pro", "Premiere Pro CC" ],
+    "path": "Adobe {name} {year}/Adobe {name} {year}.app",
+    "preferences": ["Documents/Adobe/Premiere Pro/{baseVersion}"],
+    "baseVersions": {
+      "12.0": "2018",
+      "13.0": "2019",
+      "14.0": "2020"
     }
   }
 }
