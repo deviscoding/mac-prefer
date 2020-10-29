@@ -5,7 +5,8 @@
     "preferences": ["Library/Preferences/Adobe Illustrator {baseVersion}"],
     "path": "Adobe {name} {year}/Adobe Illustrator.app",
     "baseVersions": {
-      "22.0": "2018",
+      "21.0.0": "2017",
+      "22.0.0": "2018",
       "23.0": "2019",
       "24.0": "2020",
       "25.0": "2021"
@@ -17,6 +18,7 @@
     "path": "Adobe {name} {year}/Adobe {name} {year}.app",
     "preferences": ["Library/Preferences/Adobe InDesign/Version {baseVersion}"],
     "baseVersions": {
+      "12.0": "2017",
       "13.0": "2018",
       "14.0": "2019",
       "15.0": "2020",
@@ -24,7 +26,7 @@
     }
   },
   "photoshop": {
-    "sap": "PSHP",
+    "sap": "PHSP",
     "names": [ "Photoshop", "Photoshop CC" ],
     "path": "Adobe {name} {year}/Adobe {name} {year}.app",
     "preferences": [
@@ -32,6 +34,7 @@
       "Library/Preferences/Adobe {name} {year} Paths"
     ],
     "baseVersions": {
+      "18.0": "2017",
       "19.0": "2018",
       "20.0": "2019",
       "21.0": "2020",
@@ -39,7 +42,7 @@
     }
   },
   "bridge": {
-    "sap": "PPRO",
+    "sap": "KBRG",
     "names": [ "Bridge", "Bridge CC" ],
     "path": "Adobe {name} {year}/Adobe Bridge {year}.app",
     "preferences": [
@@ -47,6 +50,7 @@
       "Library/Preferences/com.adobe.bridge{major}.plist"
     ],
     "baseVersions": {
+      "7.0": "2017",
       "8.0": "2018",
       "9.0": "2019",
       "10.0": "2020",

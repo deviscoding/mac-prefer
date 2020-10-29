@@ -184,11 +184,17 @@ class CreativeCloudApp implements \JsonSerializable {
         $this->path = $values['path'];
         $this->name = $values['name'];
       }
-      elseif (!$onlyInstalled)
+      else
       {
-        $values = $this->getEstimatedPathAndName();
-
-        return $values['name'];
+        if (is_dir($values['path']))
+        {
+          $this->path = $values['path'];
+          $this->name = $values['name'];
+        }
+        elseif (!$onlyInstalled)
+        {
+          return $values['path'];
+        }
       }
     }
 
@@ -211,11 +217,20 @@ class CreativeCloudApp implements \JsonSerializable {
         $this->path = $values['path'];
         $this->name = $values['name'];
       }
-      elseif (!$onlyInstalled)
+      else
       {
         $values = $this->getEstimatedPathAndName();
+        $path   = sprintf('/Applications/%s', $values['path']);
 
-        return $values['path'];
+        if (is_dir($path))
+        {
+          $this->path = $path;
+          $this->name = $values['name'];
+        }
+        elseif (!$onlyInstalled)
+        {
+          return $values['path'];
+        }
       }
     }
 
