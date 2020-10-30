@@ -1,6 +1,6 @@
 # MacPrefer
 
-MacPrefer is a binary tool written to ease the use of managing preferences on macOS, and is primarily intended for people administering multiple macOS systems.
+MacPrefer is a binary tool written to ease the management preferences on macOS, and is primarily intended for people administering multiple macOS systems.  It can be easily used from a tool such as Jamf Pro or Puppet to make a few specific tasks involving user preferences a little less difficult.
 
 This tool has two dependencies: [Duti](https://github.com/moretension/duti) and [DockUtil](https://github.com/kcrawford/dockutil).
 
