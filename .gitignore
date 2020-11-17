@@ -5,3 +5,7 @@ composer.lock
 
 # IDE Directories
 /.idea/*
+
+# Various Directories
+.unison.*
+*.tmp
