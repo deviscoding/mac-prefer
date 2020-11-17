@@ -66,7 +66,7 @@ class DockImportCommand extends AbstractPreferConsole
   {
     $this->io()->blankln();
     $this->io()->msg('Reading Configuration', 60);
-    if ($source = $this->io()->getOption('input'))
+    if ($source = $this->io()->getOption(self::INPUT))
     {
       $this->setConfigFromFile($source);
 
@@ -88,7 +88,7 @@ class DockImportCommand extends AbstractPreferConsole
     }
     $this->io()->successln('[SUCCESS]');
 
-    if ($dest = $this->io()->getOption('output'))
+    if ($dest = $this->io()->getOption(self::OUTPUT))
     {
       // We already read the config, but we want to change the path to output correctly
       $this->configFile = $dest;
