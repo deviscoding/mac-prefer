@@ -15,6 +15,6 @@ $command[] = new Command\DefaultApplicationCommand();
 $command[] = new Command\AdobeInfoCommand();
 $command[] = new Command\AdobeBackupCommand();
 $command[] = new Command\AdobeTransferCommand();
-$app = new Application('MacPrefer', 'v1.2.4');
+$app = new Application('MacPrefer', 'v1.2.5');
 $app->addCommands($command);
 $app->run();
