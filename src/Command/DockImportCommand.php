@@ -264,7 +264,7 @@ class DockImportCommand extends AbstractPreferConsole
       $isExisting = true;
       if ($DockItem instanceof DockSpacer)
       {
-        $cmd = sprintf("%s --add '' --type %s --section apps --no-restart", $dockutil, $DockItem->getType());
+        $cmd = sprintf("%s --add '' --type %s --section apps --no-restart '%s'", $dockutil, $DockItem->getType(), $Dock->getFile());
       }
       else
       {
