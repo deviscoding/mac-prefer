@@ -103,10 +103,12 @@ class CreativeCloudApp implements \JsonSerializable {
   public function getPreferences()
   {
     $prefs = [];
-    $info  = $this->getAppInfo($this->application);
-    foreach($info['preferences'] as $pr)
+    if ($info = $this->getAppInfo($this->application))
     {
-      $prefs[] = str_replace(['{name}', '{year}', '{version}'], [$this->getName(false), $this->getYear(), $this->getBaseVersion()], $pr);
+      foreach ($info['preferences'] as $pr)
+      {
+        $prefs[] = str_replace(['{name}', '{year}', '{version}'], [$this->getName(false), $this->getYear(), $this->getBaseVersion()], $pr);
+      }
     }
 
     return $prefs;
@@ -121,14 +123,16 @@ class CreativeCloudApp implements \JsonSerializable {
   {
     if (empty($this->baseVersion))
     {
-      $info = $this->getAppInfo($this->application);
-      $crit = ($year = $this->getYear()) ? $year : $this->getName();
-
-      foreach ($info['baseVersions'] as $ver => $vYear)
+      if ($info = $this->getAppInfo($this->application))
       {
-        if ($vYear == $crit)
+        $crit = ($year = $this->getYear()) ? $year : $this->getName();
+
+        foreach ($info['baseVersions'] as $ver => $vYear)
         {
-          $this->baseVersion = $ver;
+          if ($vYear == $crit)
+          {
+            $this->baseVersion = $ver;
+          }
         }
       }
     }
@@ -186,7 +190,7 @@ class CreativeCloudApp implements \JsonSerializable {
         $this->path = $values['path'];
         $this->name = $values['name'];
       }
-      else
+      elseif ($values = $this->getEstimatedPathAndName())
       {
         if (is_dir($values['path']))
         {
@@ -195,7 +199,7 @@ class CreativeCloudApp implements \JsonSerializable {
         }
         elseif (!$onlyInstalled)
         {
-          return $values['path'];
+          return $values['name'];
         }
       }
     }
@@ -219,9 +223,8 @@ class CreativeCloudApp implements \JsonSerializable {
         $this->path = $values['path'];
         $this->name = $values['name'];
       }
-      else
+      elseif ($values = $this->getEstimatedPathAndName())
       {
-        $values = $this->getEstimatedPathAndName();
         $path   = sprintf('/Applications/%s', $values['path']);
 
         if (is_dir($path))
@@ -247,11 +250,15 @@ class CreativeCloudApp implements \JsonSerializable {
   private function getEstimatedPathAndName()
   {
     // I guess we'll estimate, since the application isn't installed
-    $info = $this->getAppInfo($this->application);
+    if ($info = $this->getAppInfo($this->application))
+    {
     $name = $this->getYear() < 2020 ? $info['names'][1] : $info['names'][0];
     $path = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $info['path']);
 
     return [ 'name' => $name, 'path' => $path ];
+  }
+
+    return null;
   }
 
   /**
@@ -261,19 +268,21 @@ class CreativeCloudApp implements \JsonSerializable {
    */
   private function getInstalledPathAndName()
   {
-    $info = $this->getAppInfo($this->application);
-    foreach($info['names'] as $name)
+    if ($info = $this->getAppInfo($this->application))
     {
-      foreach(self::PATH_TEMPLATES as $tmpl)
+      foreach($info['names'] as $name)
       {
-        $file = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $tmpl);
-
-        if (file_exists($file))
+        foreach(self::PATH_TEMPLATES as $tmpl)
         {
-          return [
-              'path' => dirname(dirname($file)),
-              'name' => $name
-          ];
+          $file = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $tmpl);
+
+          if (file_exists($file))
+          {
+            return [
+                'path' => dirname(dirname($file)),
+                'name' => $name,
+            ];
+          }
         }
       }
     }
