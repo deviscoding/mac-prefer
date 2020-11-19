@@ -2,7 +2,7 @@
 
 namespace DevCoding\Mac\Tools;
 
-use DevCoding\Mac\Objects\AdobeApplication;
+use DevCoding\Mac\Objects\CreativeCloudApp;
 
 class AdobeLocator
 {
@@ -46,13 +46,13 @@ class AdobeLocator
 
       do
       {
-        $App = new AdobeApplication($name, $year);
+        $App = new CreativeCloudApp($name, $year);
 
-        try
+        if ($path = $App->getPath())
         {
-          return $App->getApplication();
+          return $path;
         }
-        catch (\Exception $e)
+        else
         {
           $year = $year - 1;
         }
