@@ -158,6 +158,14 @@ abstract class AbstractPreferConsole extends AbstractConfigConsole
         break;
     }
 
+    // Set Proper Ownership
+    $owner = posix_getpwuid(fileowner($this->getUserLibraryDir()));
+    $group = posix_getgrgid(filegroup($this->getUserLibraryDir()));
+    chown($this->configFile, $owner['name']);
+    chown(dirname($this->configFile), $owner['name']);
+    chgrp($this->configFile, $group['name']);
+    chgrp(dirname($this->configFile), $group['name']);
+
     return $this;
   }
 
