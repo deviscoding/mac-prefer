@@ -122,9 +122,11 @@ class CreativeCloudApp implements \JsonSerializable {
     if (empty($this->baseVersion))
     {
       $info = $this->getAppInfo($this->application);
-      foreach($info['baseVersions'] as $ver => $year)
+      $crit = ($year = $this->getYear()) ? $year : $this->getName();
+
+      foreach ($info['baseVersions'] as $ver => $vYear)
       {
-        if ($year == $this->getYear())
+        if ($vYear == $crit)
         {
           $this->baseVersion = $ver;
         }
