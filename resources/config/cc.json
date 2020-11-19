@@ -93,5 +93,25 @@
       "13.0": "2019",
       "14.0": "2020"
     }
+  },
+  "xd": {
+    "sap": "SPRK",
+    "names": [ "XD", "XD CC" ],
+    "path": "Adobe {name}/Adobe {name}.app",
+    "preferences": ["Library/Application Support/Adobe/Adobe {name}", "Library/Application Support/Adobe.{name}"],
+    "baseVersions": {
+      "1.0.12":  "XD CC",
+      "18.0.12": "XD"
+    }
+  },
+  "dimension": {
+    "sap": "ESHR",
+    "names": [ "Dimension", "Dimension CC" ],
+    "path": "Adobe {name}/Adobe {name}.app",
+    "preferences": ["Library/Application Support/Adobe {name}"],
+    "baseVersions": {
+      "2.0":  "Dimension CC",
+      "3.0": "Dimension"
+    }
   }
 }
