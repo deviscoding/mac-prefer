@@ -305,7 +305,7 @@ class CreativeCloudApp implements \JsonSerializable {
       $json = json_decode(file_get_contents($this->getProjectRoot().'/resources/config/cc.json'), true);
       foreach($json as $key => $info)
       {
-        if ($key == $str)
+        if (empty($this->appInfo) && $key == $str)
         {
           $this->appInfo = $info;
         }
@@ -317,17 +317,24 @@ class CreativeCloudApp implements \JsonSerializable {
 
   private function getProjectRoot()
   {
-    $dir = __DIR__;
-    while (!file_exists($dir.'/composer.json'))
+    if ($phar = \Phar::running(true))
     {
-      if ($dir === dirname($dir))
+      return $phar;
+    }
+    else
+    {
+      $dir = __DIR__;
+      while (!file_exists($dir.'/composer.json'))
       {
-        throw new \Exception('The project directory could not be determined.  You must have a "composer.json" file in the project root!');
+        if ($dir === dirname($dir))
+        {
+          throw new \Exception('The project directory could not be determined.  You must have a "composer.json" file in the project root!');
+        }
+
+        $dir = dirname($dir);
       }
 
-      $dir = dirname($dir);
-}
-
-    return $dir;
+      return $dir;
+    }
   }
 }
