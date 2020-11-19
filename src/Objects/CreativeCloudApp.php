@@ -1,6 +1,6 @@
 <?php
 /**
- * CreativeCloudApp.php
+ * CreativeCloudApp.php.
  */
 
 namespace DevCoding\Mac\Objects;
@@ -11,10 +11,11 @@ namespace DevCoding\Mac\Objects;
  * Class CreativeCloudApp
  *
  * @author  Aaron M Jones <am@jonesiscoding.com>
+ *
  * @package DevCoding\Mac\Objects
  */
-class CreativeCloudApp implements \JsonSerializable {
-
+class CreativeCloudApp implements \JsonSerializable
+{
   const PATH_TEMPLATES = [
       '/Applications/Adobe {name} {year}/Adobe {name} {year}.app/Contents/Info.plist',
       '/Applications/Adobe {name} {year}/Adobe {name}.app/Contents/Info.plist',
@@ -39,7 +40,7 @@ class CreativeCloudApp implements \JsonSerializable {
   protected $version;
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function jsonSerialize()
   {
@@ -52,21 +53,22 @@ class CreativeCloudApp implements \JsonSerializable {
         'year'        => $this->getYear(),
         'baseVersion' => $this->getBaseVersion(),
         'version'     => $this->getVersion(),
-        'uninstall'   => $this->getUninstall()
+        'uninstall'   => $this->getUninstall(),
     ];
   }
 
   /**
-   * @param string $app   Lowercase, dash separated
+   * @param string $app  Lowercase, dash separated
    * @param year   $year
    */
-  public function __construct($app, $year = null) {
+  public function __construct($app, $year = null)
+  {
     $this->application = $app;
-    $this->year = $year;
+    $this->year        = $year;
   }
 
   /**
-   * Returns a string for uninstalling the application from a Mac
+   * Returns a string for uninstalling the application from a Mac.
    *
    * @return string
    */
@@ -76,7 +78,7 @@ class CreativeCloudApp implements \JsonSerializable {
   }
 
   /**
-   * Returns the SAP code for the application, as defined by Adobe and taken from cc.json
+   * Returns the SAP code for the application, as defined by Adobe and taken from cc.json.
    *
    * @return string
    */
@@ -98,7 +100,7 @@ class CreativeCloudApp implements \JsonSerializable {
   }
 
   /**
-   * @return string[]   Returns an array of relative paths, relative to a Mac user folder
+   * @return string[] Returns an array of relative paths, relative to a Mac user folder
    */
   public function getPreferences()
   {
@@ -115,7 +117,7 @@ class CreativeCloudApp implements \JsonSerializable {
   }
 
   /**
-   * Returns the base version of this application, based on data from cc.json
+   * Returns the base version of this application, based on data from cc.json.
    *
    * @return string
    */
@@ -149,8 +151,8 @@ class CreativeCloudApp implements \JsonSerializable {
     {
       if ($path = $this->getPath())
       {
-        $plist = sprintf("%s/Contents/Info.plist", $path);
-        $cmd = sprintf('/usr/bin/defaults read "%s" CFBundleVersion', $plist);
+        $plist = sprintf('%s/Contents/Info.plist', $path);
+        $cmd   = sprintf('/usr/bin/defaults read "%s" CFBundleVersion', $plist);
 
         if ($bundleVersion = shell_exec($cmd))
         {
@@ -165,19 +167,19 @@ class CreativeCloudApp implements \JsonSerializable {
   /**
    * Returns the name of this application, including the year if applicable.
    *
-   * @param bool $onlyInstalled  Only return values for applications that are installed.
+   * @param bool $onlyInstalled only return values for applications that are installed
    *
    * @return string|null
    */
   public function getFullName($onlyInstalled = true)
   {
-    return ($name = $this->getName($onlyInstalled)) ? trim($name . ' ' . $this->getYear()) : null;
+    return ($name = $this->getName($onlyInstalled)) ? trim($name.' '.$this->getYear()) : null;
   }
 
   /**
    * Returns the name of this application.
    *
-   * @param bool $onlyInstalled  Only return values for applications that are installed.
+   * @param bool $onlyInstalled only return values for applications that are installed
    *
    * @return string
    */
@@ -208,9 +210,9 @@ class CreativeCloudApp implements \JsonSerializable {
   }
 
   /**
-   * Returns the posix path of this application
+   * Returns the posix path of this application.
    *
-   * @param bool $onlyInstalled  Only return values for applications that are installed.
+   * @param bool $onlyInstalled only return values for applications that are installed
    *
    * @return string
    */
@@ -225,7 +227,7 @@ class CreativeCloudApp implements \JsonSerializable {
       }
       elseif ($values = $this->getEstimatedPathAndName())
       {
-        $path   = sprintf('/Applications/%s', $values['path']);
+        $path = sprintf('/Applications/%s', $values['path']);
 
         if (is_dir($path))
         {
@@ -243,20 +245,20 @@ class CreativeCloudApp implements \JsonSerializable {
   }
 
   /**
-   * Returns the estimated path and name of this application, derived from the 'path' key in cc.json
+   * Returns the estimated path and name of this application, derived from the 'path' key in cc.json.
    *
-   * @return string[]  An array with two keys, 'path' and 'name'
+   * @return string[] An array with two keys, 'path' and 'name'
    */
   private function getEstimatedPathAndName()
   {
     // I guess we'll estimate, since the application isn't installed
     if ($info = $this->getAppInfo($this->application))
     {
-    $name = $this->getYear() < 2020 ? $info['names'][1] : $info['names'][0];
-    $path = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $info['path']);
+      $name = $this->getYear() < 2020 ? $info['names'][1] : $info['names'][0];
+      $path = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $info['path']);
 
-    return [ 'name' => $name, 'path' => $path ];
-  }
+      return ['name' => $name, 'path' => $path];
+    }
 
     return null;
   }
@@ -270,9 +272,9 @@ class CreativeCloudApp implements \JsonSerializable {
   {
     if ($info = $this->getAppInfo($this->application))
     {
-      foreach($info['names'] as $name)
+      foreach ($info['names'] as $name)
       {
-        foreach(self::PATH_TEMPLATES as $tmpl)
+        foreach (self::PATH_TEMPLATES as $tmpl)
         {
           $file = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $tmpl);
 
@@ -291,9 +293,9 @@ class CreativeCloudApp implements \JsonSerializable {
   }
 
   /**
-   * Returns an array of info for the given app, taken from cc.json
+   * Returns an array of info for the given app, taken from cc.json.
    *
-   * @param string $str   The application key, such as 'photoshop' or 'after-effects'
+   * @param string $str The application key, such as 'photoshop' or 'after-effects'
    *
    * @return array|null
    */
@@ -303,7 +305,7 @@ class CreativeCloudApp implements \JsonSerializable {
     {
       $str  = str_replace([' ', '_'], '-', strtolower($str));
       $json = json_decode(file_get_contents($this->getProjectRoot().'/resources/config/cc.json'), true);
-      foreach($json as $key => $info)
+      foreach ($json as $key => $info)
       {
         if (empty($this->appInfo) && $key == $str)
         {
