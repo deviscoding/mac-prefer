@@ -4,9 +4,6 @@
 namespace DevCoding\Mac\Command;
 
 
-use DevCoding\Command\Base\AbstractConsole;
-use DevCoding\Mac\Objects\CreativeCloudApp;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -244,7 +241,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
 
   protected function copyPreferences($srcPrefs, $search, $replace)
   {
-    $uDir = $this->getUserDir();
+    $uDir = $this->getUser()->getDir();
     foreach($srcPrefs as $srcPref)
     {
       $dstPref = str_replace($search, $replace, $srcPref);

@@ -27,12 +27,11 @@ class DockImportCommand extends AbstractPreferConsole
     $this->setName('dock:import');
     $this->addOption(self::INPUT, null, InputOption::VALUE_REQUIRED, 'The file from which to take the dock config.');
     $this->addOption(self::OUTPUT, null, InputOption::VALUE_REQUIRED, 'The file in which to dump the dock config.');
-    $this->addOption(self::USER, null, InputOption::VALUE_REQUIRED, 'The user for which to to run the command.');
   }
 
   protected function interact(InputInterface $input, OutputInterface $output)
   {
-    $this->setUserFromInput($input);
+    parent::interact($input, $output);
 
     // Get Config File Source
     if (!$in = $this->io()->getOption(self::INPUT))

@@ -4,28 +4,13 @@
 namespace DevCoding\Mac\Command;
 
 
-use DevCoding\Command\Base\AbstractMacConsole;
 use DevCoding\Mac\Objects\CreativeCloudApp;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class AbstractAdobeConsole extends AbstractMacConsole
 {
-  public function configure()
+  protected function isAllowUserOption()
   {
-    $this->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'The user to run the command for.  Defaults to current user.');
-  }
-
-  public function interact(InputInterface $input, OutputInterface $output)
-  {
-    if ($input->hasOption('user'))
-    {
-      if ($user = $input->getOption('user'))
-      {
-        $this->setUser($user);
-      }
-    }
+    return true;
   }
 
   /**
@@ -43,11 +28,11 @@ class AbstractAdobeConsole extends AbstractMacConsole
   {
     if ($year)
     {
-      return sprintf("%s/Preferences/Prefer/CC/%s/%s", $this->getUserLibraryDir(), $app, $year);
+      return sprintf("%s/Preferences/Prefer/CC/%s/%s", $this->getUser()->getLibrary(), $app, $year);
     }
     else
     {
-      return sprintf("%s/Preferences/Prefer/CC/%s", $this->getUserLibraryDir(), $app);
+      return sprintf("%s/Preferences/Prefer/CC/%s", $this->getUser()->getLibrary(), $app);
     }
   }
 
@@ -72,7 +57,7 @@ class AbstractAdobeConsole extends AbstractMacConsole
       }
     }
 
-    $userDir = $this->getUserDir();
+    $userDir = $this->getUser()->getDir();
     foreach($ccApp->getPreferences() as $preference)
     {
       $path = sprintf("%s/%s", $userDir, $preference);
@@ -102,35 +87,6 @@ class AbstractAdobeConsole extends AbstractMacConsole
     }
 
     return true;
-  }
-
-  private function rrmdir($src)
-  {
-    if (is_dir($src))
-    {
-      $inTmp  = (strpos($src, '/tmp') === 0 && $src !== '/tmp');
-      $inUser = (strpos($src, $this->getUserDir()) === 0 && $src !== $this->getUserDir());
-
-      if (!$inTmp && !$inUser)
-      {
-        throw new \Exception(sprintf('The directory "%s" cannot be deleted with this application.',$src));
-      }
-
-      $dir = opendir($src);
-      while(false !== ( $file = readdir($dir)) ) {
-        if (( $file != '.' ) && ( $file != '..' )) {
-          $full = $src . '/' . $file;
-          if ( is_dir($full) ) {
-            $this->rrmdir($full);
-          }
-          else {
-            unlink($full);
-          }
-        }
-      }
-      closedir($dir);
-      rmdir($src);
-    }
   }
 
   private function rcopy( $src, $dst )

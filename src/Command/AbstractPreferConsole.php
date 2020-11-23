@@ -19,7 +19,6 @@ abstract class AbstractPreferConsole extends AbstractConfigConsole
 {
   const INPUT  = 'in';
   const OUTPUT = 'out';
-  const USER   = 'user';
   const EXT    = 'yml';
 
   /**
@@ -83,26 +82,6 @@ abstract class AbstractPreferConsole extends AbstractConfigConsole
     return $dest;
   }
 
-  /**
-   * Sets the user based on the command line option.
-   *
-   * @param InputInterface $Input
-   *
-   * @return $this
-   *
-   * @throws \Exception
-   */
-  protected function setUserFromInput(InputInterface $Input)
-  {
-    // Default the User
-    if ($user = $Input->getOption('user'))
-    {
-      $this->setUser($user);
-    }
-
-    return $this;
-  }
-
   // endregion ///////////////////////////////////////////// End Interact Methods
 
   // region //////////////////////////////////////////////// Config Helper Methods
@@ -116,7 +95,7 @@ abstract class AbstractPreferConsole extends AbstractConfigConsole
    */
   protected function getDefaultConfigPath($ext = self::EXT)
   {
-    return sprintf('%s/Preferences/Prefer/%s.%s', $this->getUserLibraryDir(), $this->getDefaultConfigFileName(), $ext);
+    return sprintf('%s/Preferences/Prefer/%s.%s', $this->getUser()->getLibrary(), $this->getDefaultConfigFileName(), $ext);
   }
 
   protected function setConfigFromUser($name)
@@ -159,12 +138,7 @@ abstract class AbstractPreferConsole extends AbstractConfigConsole
     }
 
     // Set Proper Ownership
-    $owner = posix_getpwuid(fileowner($this->getUserLibraryDir()));
-    $group = posix_getgrgid(filegroup($this->getUserLibraryDir()));
-    chown($this->configFile, $owner['name']);
-    chown(dirname($this->configFile), $owner['name']);
-    chgrp($this->configFile, $group['name']);
-    chgrp(dirname($this->configFile), $group['name']);
+    $this->setUserAsOwner($this->configFile, $this->getUser(), true);
 
     return $this;
   }

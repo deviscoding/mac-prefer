@@ -23,15 +23,16 @@ class DockDumpCommand extends AbstractPreferConsole
 
   protected function configure()
   {
+    parent::configure();
+
     $this->setName('dock:dump');
     $this->addOption(self::INPUT, null, InputOption::VALUE_REQUIRED, 'The plist file to use for the source.');
     $this->addOption(self::OUTPUT, null, InputOption::VALUE_REQUIRED, 'The file to which to dump the dock config.');
-    $this->addOption(self::USER, null, InputOption::VALUE_REQUIRED, 'The user for which to to run the command.');
   }
 
   protected function interact(InputInterface $input, OutputInterface $output)
   {
-    $this->setUserFromInput($input);
+    parent::interact($input, $output);
 
     // Get PList Source
     if (!$source = $input->getOption(self::INPUT))

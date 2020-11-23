@@ -2,13 +2,17 @@
 
 namespace DevCoding\Mac\Command;
 
-use DevCoding\Command\Base\AbstractMacConsole;
 use Symfony\Component\Yaml\Yaml;
 
 class AbstractConfigConsole extends AbstractMacConsole
 {
   protected $config;
   protected $configFile;
+
+  protected function isAllowUserOption()
+  {
+    return true;
+  }
 
   protected function hasConfig()
   {
@@ -26,7 +30,7 @@ class AbstractConfigConsole extends AbstractMacConsole
 
   protected function setConfigFromUser($name)
   {
-    $userDir = $this->getUserDir();
+    $userDir = $this->getUser()->getDir();
     $try[]   = sprintf('%s/.%s.yml', $userDir, $name);
     $try[]   = sprintf('%s/.%s.json', $userDir, $name);
 

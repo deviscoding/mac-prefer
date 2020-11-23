@@ -17,17 +17,18 @@ class DefaultApplicationCommand extends AbstractPreferConsole
 
   protected function configure()
   {
+    parent::configure();
+
     $this->setName('defaults:app');
     $this->addOption(self::INPUT, null, InputOption::VALUE_REQUIRED, 'The file from which to take the default apps config.');
     $this->addOption(self::OUTPUT, null, InputOption::VALUE_REQUIRED, 'The file in which to dump the default apps config.');
-    $this->addOption(self::USER, null, InputOption::VALUE_REQUIRED, 'The user for which to to run the command.');
     $this->addOption('extension', 'e', InputOption::VALUE_REQUIRED, 'The file extension for which to set the default.');
     $this->addOption('app', 'a', InputOption::VALUE_REQUIRED, 'The application to use for the extension.');
   }
 
   protected function interact(InputInterface $input, OutputInterface $output)
   {
-    $this->setUserFromInput($input);
+    parent::interact($input, $output);
 
     // Get Config File Source
     if (!$in = $input->getOption(self::INPUT))
@@ -189,7 +190,7 @@ class DefaultApplicationCommand extends AbstractPreferConsole
   {
     if (is_string($item))
     {
-      $str = str_replace('~', $this->getUserDir(), $item);
+      $str = str_replace('~', $this->getUser()->getDir(), $item);
 
       if (!$this->isAbsolute($str) && !$this->isApp($str))
       {
@@ -204,7 +205,7 @@ class DefaultApplicationCommand extends AbstractPreferConsole
           }
         }
 
-        $uAppPath = sprintf('%s/Applications/%s.app', $this->getUserDir(), $str);
+        $uAppPath = sprintf('%s/Applications/%s.app', $this->getUser()->getDir(), $str);
         $sAppPath = sprintf('/Applications/%s.app', $str);
 
         if (is_dir($uAppPath))
