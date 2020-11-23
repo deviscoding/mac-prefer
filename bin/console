@@ -3,11 +3,11 @@
 
 set_time_limit(0);
 
-$dir = __DIR__ . '/..';
+$dir = __DIR__.'/..';
 require_once $dir.'/vendor/autoload.php';
 
-use Symfony\Component\Console\Application;
 use DevCoding\Mac\Command as Command;
+use Symfony\Component\Console\Application;
 
 $command[] = new Command\DockImportCommand();
 $command[] = new Command\DockDumpCommand();
@@ -15,6 +15,7 @@ $command[] = new Command\DefaultApplicationCommand();
 $command[] = new Command\AdobeInfoCommand();
 $command[] = new Command\AdobeBackupCommand();
 $command[] = new Command\AdobeTransferCommand();
-$app = new Application('MacPrefer', 'v1.2.7');
+$command[] = new Command\MenuAddCommand();
+$app       = new Application('MacPrefer', 'v1.3');
 $app->addCommands($command);
 $app->run();
