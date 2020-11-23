@@ -20,6 +20,7 @@ class CreativeCloudApp implements \JsonSerializable
       '/Applications/Adobe {name} {year}/Adobe {name} {year}.app/Contents/Info.plist',
       '/Applications/Adobe {name} {year}/Adobe {name}.app/Contents/Info.plist',
       '/Applications/Adobe {name}/Adobe {name}.app/Contents/Info.plist',
+      '/Applications/Adobe {name} CC/Adobe {name}.app/Contents/Info.plist',
   ];
 
   const UNINSTALL = '/Library/Application\ Support/Adobe/Adobe\ Desktop\ Common/HDBox/Setup --uninstall=1 --sapCode={sap} --baseVersion={version} --deleteUserPreferences=false --platform=osx10-64';
@@ -107,9 +108,12 @@ class CreativeCloudApp implements \JsonSerializable
     $prefs = [];
     if ($info = $this->getAppInfo($this->application))
     {
-      foreach ($info['preferences'] as $pr)
+      if (!empty($info['preferences']))
       {
-        $prefs[] = str_replace(['{name}', '{year}', '{version}'], [$this->getName(false), $this->getYear(), $this->getBaseVersion()], $pr);
+        foreach ($info['preferences'] as $pr)
+        {
+          $prefs[] = str_replace(['{name}', '{year}', '{version}'], [$this->getName(false), $this->getYear(), $this->getBaseVersion()], $pr);
+        }
       }
     }
 
@@ -254,7 +258,7 @@ class CreativeCloudApp implements \JsonSerializable
     // I guess we'll estimate, since the application isn't installed
     if ($info = $this->getAppInfo($this->application))
     {
-      $name = $this->getYear() < 2020 ? $info['names'][1] : $info['names'][0];
+      $name = ($this->getYear() && $this->getYear() < 2020) ? $info['names'][1] : $info['names'][0];
       $path = str_replace(['{name}', '{year}'], [$name, $this->getYear()], $info['path']);
 
       return ['name' => $name, 'path' => $path];
@@ -303,11 +307,19 @@ class CreativeCloudApp implements \JsonSerializable
   {
     if (empty($this->appInfo))
     {
-      $str  = str_replace([' ', '_'], '-', strtolower($str));
+      $norm = $this->normalizeKey($str);
       $json = json_decode(file_get_contents($this->getProjectRoot().'/resources/config/cc.json'), true);
       foreach ($json as $key => $info)
       {
-        if (empty($this->appInfo) && $key == $str)
+        if (empty($this->appInfo) && $key == $norm)
+        {
+          $this->appInfo = $info;
+        }
+      }
+
+      if (empty($this->appInfo))
+      {
+        if ($info = $this->getAppInfoFromAdbArg($str))
         {
           $this->appInfo = $info;
         }
@@ -315,6 +327,78 @@ class CreativeCloudApp implements \JsonSerializable
     }
 
     return $this->appInfo;
+  }
+
+  private function getAppInfoFromAdbArg($str)
+  {
+    $dir   = '/Library/Application Support/Adobe/Uninstall';
+    $years = ['2015', '2017', '2018', '2018', '2019', '2020', '2021', '2022'];
+    $bVer  = [];
+    $names = [];
+    $paths = [];
+
+    if (is_dir($dir))
+    {
+      foreach (glob($dir.'/*.adbarg') as $adbarg)
+      {
+        $contents = file_get_contents($adbarg);
+        $lines    = explode("\n", $contents);
+        $tInfo    = [];
+        unset($tYear);
+        foreach ($lines as $line)
+        {
+          if (preg_match('#^--([^=]+)=(.*)$#', $line, $matches))
+          {
+            $key         = $matches[1];
+            $tInfo[$key] = $matches[2];
+          }
+        }
+
+        if (!empty($tInfo['productName']))
+        {
+          $tStr = $this->normalizeKey($tInfo['productName']);
+          if ($tStr == $str)
+          {
+            $nme = $tInfo['productName'];
+            $sap = !empty($tInfo['sapCode']) ? $tInfo['sapCode'] : null;
+            $ver = !empty($tInfo['productVersion']) ? $tInfo['productVersion'] : null;
+
+            foreach (self::PATH_TEMPLATES as $template)
+            {
+              foreach ($years as $year)
+              {
+                $plist = str_replace(['{name}', '{year}'], [$nme, $year], $template);
+
+                if (file_exists($plist))
+                {
+                  if (false !== strpos($plist, $year))
+                  {
+                    $tYear = $year;
+                  }
+
+                  $paths[] = dirname(dirname($template));
+                }
+              }
+            }
+
+            $names[]    = $tInfo['productName'];
+            $bVer[$ver] = isset($tYear) ? $tYear : $tInfo['productName'];
+          }
+        }
+      }
+    }
+
+    if (isset($sap) && !empty($names) && !empty($bVer) && !empty($paths))
+    {
+      return ['sap' => $sap, 'names' => $names, 'baseVersions' => $bVer, 'path' => array_unique($paths)];
+    }
+
+    return null;
+  }
+
+  private function normalizeKey($key)
+  {
+    return str_replace([' ', '_'], '-', strtolower($key));
   }
 
   private function getProjectRoot()
