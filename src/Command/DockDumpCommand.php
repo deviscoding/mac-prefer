@@ -37,7 +37,7 @@ class DockDumpCommand extends AbstractPreferConsole
     // Get PList Source
     if (!$source = $input->getOption(self::INPUT))
     {
-      $source = sprintf('%s/Preferences/com.apple.dock.plist', $this->getUserLibraryDir());
+      $source = sprintf('%s/Preferences/com.apple.dock.plist', $this->getUser()->getLibrary());
 
       if (file_exists($source))
       {

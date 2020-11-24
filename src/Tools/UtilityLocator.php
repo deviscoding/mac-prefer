@@ -14,7 +14,7 @@ class UtilityLocator
       'raid'                 => 'RAID Utility',
       'storage'              => 'Storage Management',
       'wireless_diagnostics' => 'Wireless Diagnostics',
-      'image_utility'        => 'System Image Utility'
+      'image_utility'        => 'System Image Utility',
   ];
 
   public static function handles($str)
@@ -41,7 +41,7 @@ class UtilityLocator
   {
     if (preg_match('#/System/Library/CoreServices/Applications/([A-Za-z\s]+)#', $str, $matches))
     {
-      foreach(self::HANDLES as $key => $app)
+      foreach (self::HANDLES as $key => $app)
       {
         if ($matches[1] == $app)
         {

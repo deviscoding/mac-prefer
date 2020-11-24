@@ -165,7 +165,8 @@ class DockImportCommand extends AbstractPreferConsole
   {
     if (is_string($item))
     {
-      $str = str_replace('~', $this->getUserDir(), $item);
+      $uDir = $this->getUser()->getDir();
+      $str  = str_replace('~', $uDir, $item);
 
       if (!$this->isAbsolute($str) && !$this->isApp($str))
       {
@@ -180,7 +181,7 @@ class DockImportCommand extends AbstractPreferConsole
           }
         }
 
-        $uAppPath = sprintf('%s/Applications/%s.app', $this->getUserDir(), $str);
+        $uAppPath = sprintf('%s/Applications/%s.app', $uDir, $str);
         $sAppPath = sprintf('/Applications/%s.app', $str);
 
         if (is_dir($uAppPath))

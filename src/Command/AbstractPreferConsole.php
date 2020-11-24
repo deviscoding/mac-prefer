@@ -5,7 +5,6 @@
 
 namespace DevCoding\Mac\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**

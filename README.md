@@ -43,7 +43,7 @@ This command will import a properly formatted YAML or JSON file as the given use
 | in | The path to the config file to import. |  
 | out | The path to save the config file to, after import. Defaults to `/Users/XXX/Library/Prefer/dock.yml` | user | The user to import a dock for.  This defaults to the current user, which makes it important to include this flag when running this tool as root.|  
   
-The format of the configuration is an array, with each primary key being separated by a spacer in the dock.  Elements within the primary keys are entries in the dock.  Each element is either an application's name, the an absolute path to an application, or an array describing a link to another resource.  An example in YAML is below:  
+The format of the configuration is an array, with each primary key being separated by a spacer in the dock.  Elements within the primary keys are entries in the dock.  Each element is either an application's name, an absolute path to an application, or an array describing a link to another resource.  An example in YAML is below:  
   
  group1: - Messages - Postbox group2: - Safari - Firefox - 'Google Chrome' - 'Microsoft Edge' group5: - Hyper - { link: /Applications/Custom.terminal } - screen_sharing group6: - { link: /Applications/, section: others, display: folder, view: grid, sort: name }  When processing application names, the following locations are checked for the application:  
   
@@ -54,7 +54,7 @@ When processing links, the following keys and values can be used:
   
 |Key  | Possible Values |  
 |--|--|  
-| link | A typical link with scheme (IE - file://) |  
+| link | A typical link with a scheme (IE - file://) |  
 | section | _apps_, _others_ |  
 | display | _stack_, _folder_ |  
 | view | _grid_, _fan_, _list_, _auto_ |  
@@ -69,12 +69,12 @@ For all of these commands, the application name should be provided in lowercase,
 #### adobe:info _app_ _year_  
 Provides information about an installed Adobe Creative Cloud application, output in JSON format.  This information includes:  
   
- - Actual version installed  
+ - Version installed  
  - Path to application  
  - SAP code  
  - Base version  
  - Uninstaller command string  
- - Paths to known preferences  
+ - Paths to known preferences 
   
 The year is optional for the applications that do not use it, such as XD, Dimension, and Lightroom.  
   

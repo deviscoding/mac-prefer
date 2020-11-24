@@ -1,8 +1,6 @@
 <?php
 
-
 namespace DevCoding\Mac\Command;
-
 
 use DevCoding\Mac\Objects\CreativeCloudApp;
 
@@ -28,11 +26,11 @@ class AbstractAdobeConsole extends AbstractMacConsole
   {
     if ($year)
     {
-      return sprintf("%s/Preferences/Prefer/CC/%s/%s", $this->getUser()->getLibrary(), $app, $year);
+      return sprintf('%s/Preferences/Prefer/CC/%s/%s', $this->getUser()->getLibrary(), $app, $year);
     }
     else
     {
-      return sprintf("%s/Preferences/Prefer/CC/%s", $this->getUser()->getLibrary(), $app);
+      return sprintf('%s/Preferences/Prefer/CC/%s', $this->getUser()->getLibrary(), $app);
     }
   }
 
@@ -44,7 +42,7 @@ class AbstractAdobeConsole extends AbstractMacConsole
    */
   protected function doPreferenceBackup(CreativeCloudApp $ccApp, $dest)
   {
-    $dest = $dest . '/tmp';
+    $dest = $dest.'/tmp';
     if (!is_dir($dest))
     {
       if (!file_exists($dest))
@@ -58,28 +56,28 @@ class AbstractAdobeConsole extends AbstractMacConsole
     }
 
     $userDir = $this->getUser()->getDir();
-    foreach($ccApp->getPreferences() as $preference)
+    foreach ($ccApp->getPreferences() as $preference)
     {
-      $path = sprintf("%s/%s", $userDir, $preference);
+      $path = sprintf('%s/%s', $userDir, $preference);
       if (file_exists($path))
       {
-        $cmd = sprintf('rsync -aP --ignore-times "%s" "%s/"',$path,$dest);
-        exec($cmd,$output,$retval);
-        if ($retval !== 0)
+        $cmd = sprintf('rsync -aP --ignore-times "%s" "%s/"', $path, $dest);
+        exec($cmd, $output, $retval);
+        if (0 !== $retval)
         {
           throw new \Exception('An error was encountered backing up preferences: ');
         }
       }
     }
 
-    $date = date( 'Ymd-Hi' );
-    $zipFile = sprintf( 'backup-%s.zip', $date );
-    $zipPath = dirname($dest) . '/' . $zipFile;
-    $cmd = sprintf( 'cd "%s" && zip -r "%s" ./* && cd -', $dest, $zipPath );
-    exec( $cmd,$output, $retval );
-    if( $retval || !file_exists( $zipPath ) )
+    $date    = date('Ymd-Hi');
+    $zipFile = sprintf('backup-%s.zip', $date);
+    $zipPath = dirname($dest).'/'.$zipFile;
+    $cmd     = sprintf('cd "%s" && zip -r "%s" ./* && cd -', $dest, $zipPath);
+    exec($cmd, $output, $retval);
+    if ($retval || !file_exists($zipPath))
     {
-      throw new \Exception( "Could not compress the backup after copying." );
+      throw new \Exception('Could not compress the backup after copying.');
     }
     else
     {
@@ -87,40 +85,5 @@ class AbstractAdobeConsole extends AbstractMacConsole
     }
 
     return true;
-  }
-
-  private function rcopy( $src, $dst )
-  {
-    if (!is_dir($dst))
-    {
-      @mkdir( $dst );
-    }
-
-    if (is_dir($src))
-    {
-      $dir = opendir( $src );
-      while( false !== ( $file = readdir( $dir ) ) )
-      {
-        if( ( $file != '.' ) && ( $file != '..' ) )
-        {
-          if( is_dir( $src . '/' . $file ) )
-          {
-            $this->rcopy( $src . '/' . $file, $dst . '/' . $file );
-          }
-          else
-          {
-            if( !copy( $src . '/' . $file, $dst . '/' . $file ) )
-            {
-              throw new \Exception( "Could not copy\n" . $src . "\nto\n" . $dst );
-            }
-          }
-        }
-      }
-      closedir( $dir );
-    }
-    elseif(is_file($src))
-    {
-      copy($src, $dst.'/');
-    }
   }
 }

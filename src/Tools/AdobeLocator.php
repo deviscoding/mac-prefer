@@ -57,9 +57,9 @@ class AdobeLocator
           $year = $year - 1;
         }
       } while ($year >= self::OLDEST);
-
-      return null;
     }
+
+    return null;
   }
 
   public static function getLatestAcrobat()
@@ -102,12 +102,12 @@ class AdobeLocator
 
   public static function getReverse($str)
   {
-    if (strpos($str, 'Acrobat Distiller') !== false)
+    if (false !== strpos($str, 'Acrobat Distiller'))
     {
       return 'distiller';
     }
 
-    if (strpos($str, 'Adobe Acrobat') !== false)
+    if (false !== strpos($str, 'Adobe Acrobat'))
     {
       return 'acrobat';
     }
@@ -116,7 +116,7 @@ class AdobeLocator
     {
       $long = trim(str_replace('CC', '', $matches[1]));
 
-      foreach(self::HANDLES as $key => $app)
+      foreach (self::HANDLES as $key => $app)
       {
         if ($app == $long)
         {

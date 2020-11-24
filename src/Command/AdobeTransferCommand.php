@@ -1,8 +1,8 @@
 <?php
 
+/** @noinspection PhpUnusedParameterInspection */
 
 namespace DevCoding\Mac\Command;
-
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,7 +56,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
 
       if ($from = $this->io()->ask('What year should we copy preferences FROM?', $default))
       {
-        $this->io()->getInput()->setOption('from',$from);
+        $this->io()->getInput()->setOption('from', $from);
       }
     }
 
@@ -73,7 +73,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
   {
     if ($from = $input->getOption('from'))
     {
-      if (!is_numeric($from) || (int)$from < 2015)
+      if (!is_numeric($from) || (int) $from < 2015)
       {
         throw new \Exception('You must use a year greater than 2015 for the "--from" option.');
       }
@@ -85,7 +85,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
 
     if ($to = $input->getOption('to'))
     {
-      if (!is_numeric($to) || (int)$to < 2015)
+      if (!is_numeric($to) || (int) $to < 2015)
       {
         throw new \Exception('You must use a year greater than 2015 for the "--from" option.');
       }
@@ -95,7 +95,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
       throw new \Exception('You must use the "--from" option to indicate the year to copy preferences from.');
     }
 
-    if ((int)$from == (int)$to)
+    if ((int) $from == (int) $to)
     {
       throw new \Exception('You must indicate a different year for the "--from" and "--to" options.');
     }
@@ -107,7 +107,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
     {
       $this->validate($input, $output);
     }
-    catch(\Exception $e)
+    catch (\Exception $e)
     {
       $this->io()->errorblk($e->getMessage());
 
@@ -203,7 +203,7 @@ class AdobeTransferCommand extends AbstractAdobeConsole
     {
       $this->doPreferenceBackup($dst, $this->getBackupPath($app, $to));
     }
-    catch(\Exception $e)
+    catch (\Exception $e)
     {
       $this->io()->errorln('[ERROR]');
 
@@ -214,12 +214,12 @@ class AdobeTransferCommand extends AbstractAdobeConsole
     $this->io()->successln('[DONE]');
 
     // Copy Preferences
-    $this->io()->msg(sprintf('Copying %s Prefs from %s to %s', $srcName, $from, $to),50);
+    $this->io()->msg(sprintf('Copying %s Prefs from %s to %s', $srcName, $from, $to), 50);
     try
     {
       $this->copyPreferences($srcPrefs, $search, $replace);
     }
-    catch(\Exception $e)
+    catch (\Exception $e)
     {
       $this->io()->errorln('[ERROR]');
 
@@ -242,11 +242,11 @@ class AdobeTransferCommand extends AbstractAdobeConsole
   protected function copyPreferences($srcPrefs, $search, $replace)
   {
     $uDir = $this->getUser()->getDir();
-    foreach($srcPrefs as $srcPref)
+    foreach ($srcPrefs as $srcPref)
     {
       $dstPref = str_replace($search, $replace, $srcPref);
-      $srcPath = sprintf("%s/%s", $uDir, $srcPref);
-      $dstPath = sprintf("%s/%s", $uDir, $dstPref);
+      $srcPath = sprintf('%s/%s', $uDir, $srcPref);
+      $dstPath = sprintf('%s/%s', $uDir, $dstPref);
 
       if (file_exists($srcPath))
       {
@@ -262,16 +262,19 @@ class AdobeTransferCommand extends AbstractAdobeConsole
           }
 
           $cmd = sprintf('rsync -aP --ignore-times "%s/" "%s/"', $srcPath, $dstPath);
-          exec($cmd,$output,$retval);
+          exec($cmd, $output, $retval);
 
-          if ($retval !== 0)
+          if (0 !== $retval)
           {
-            throw new \Exception(sprintf('An error was encountered copying preference directory "%s"', implode("\n",$output)));
+            throw new \Exception(sprintf('An error was encountered copying preference directory "%s"', implode("\n", $output)));
           }
         }
-        elseif(is_file($srcPath))
+        elseif (is_file($srcPath))
         {
-          if(is_file($dstPref)) { unlink($dstPath); }
+          if (is_file($dstPref))
+          {
+            unlink($dstPath);
+          }
           if (!copy($srcPath, $dstPath))
           {
             throw new \Exception(sprintf('An error was encountered copying %s', $srcPath));
@@ -285,9 +288,9 @@ class AdobeTransferCommand extends AbstractAdobeConsole
               chown($dstPath, $owner['name']);
               chgrp($dstPath, $group['name']);
             }
-            catch(\Exception $e)
+            catch (\Exception $e)
             {
-              throw new \Exception(sprintf('An error was encountered setting permissions on "%s"',$dstPath));
+              throw new \Exception(sprintf('An error was encountered setting permissions on "%s"', $dstPath));
             }
           }
         }

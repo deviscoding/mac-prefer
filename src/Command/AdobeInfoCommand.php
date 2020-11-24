@@ -1,8 +1,6 @@
 <?php
 
-
 namespace DevCoding\Mac\Command;
-
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,17 +23,17 @@ class AdobeInfoCommand extends AbstractAdobeConsole
 
   public function execute(InputInterface $input, OutputInterface $output)
   {
-    $app  = strtolower(str_replace(" ", "-", $this->io()->getArgument('application')));
-    $year = $this->io()->getArgument('year');
+    $app   = strtolower(str_replace(' ', '-', $this->io()->getArgument('application')));
+    $year  = $this->io()->getArgument('year');
     $ccApp = $this->getCreativeCloudApp($app, $year);
 
     if ($ccApp->getPath())
     {
-      $this->io()->writeln(json_encode($ccApp, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES));
+      $this->io()->writeln(json_encode($ccApp, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
     }
     else
     {
-      echo "{}";
+      echo '{}';
     }
 
     return self::EXIT_SUCCESS;

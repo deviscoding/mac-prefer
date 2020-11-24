@@ -1,8 +1,6 @@
 <?php
 
-
 namespace DevCoding\Mac\Command;
-
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +20,7 @@ class AdobeBackupCommand extends AbstractAdobeConsole
 
   public function execute(InputInterface $input, OutputInterface $output)
   {
-    $app   = strtolower(str_replace(" ", "-", $this->io()->getArgument('application')));
+    $app   = strtolower(str_replace(' ', '-', $this->io()->getArgument('application')));
     $year  = $this->io()->getArgument('year');
     $ccApp = $this->getCreativeCloudApp($app, $year);
     $this->io()->blankln();
@@ -34,11 +32,11 @@ class AdobeBackupCommand extends AbstractAdobeConsole
 
       try
       {
-        $this->io()->msg('Backing Up '.$ccApp->getFullName().' Preferences',50);
+        $this->io()->msg('Backing Up '.$ccApp->getFullName().' Preferences', 50);
         $this->doPreferenceBackup($ccApp, $this->getBackupPath($app, $year));
         $this->io()->successln('[DONE]');
       }
-      catch(\Exception $e)
+      catch (\Exception $e)
       {
         $this->io()->errorln('[ERROR]');
         $this->io()->errorblk($e->getMessage());
