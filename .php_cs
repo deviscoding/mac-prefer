@@ -20,6 +20,8 @@ return PhpCsFixer\Config::create()
    ->setRules([
         '@Symfony' => true,
         'phpdoc_no_package' => false,
+        'no_superfluous_phpdoc_tags' => [''],
+        'phpdoc_add_missing_param_annotation' => ['only_untyped' => false ],
         'binary_operator_spaces' => [ 'default' => 'align_single_space_minimal'],
          'braces' => [ 'position_after_control_structures' => 'next' ]
     ])
