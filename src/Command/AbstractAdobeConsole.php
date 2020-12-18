@@ -36,11 +36,13 @@ class AbstractAdobeConsole extends AbstractMacConsole
 
   /**
    * @param CreativeCloudApp $ccApp
-   * @param                  $dest
+   * @param string           $dest
    *
    * @return bool
+   *
+   * @throws \Exception
    */
-  protected function doPreferenceBackup(CreativeCloudApp $ccApp, $dest)
+  protected function doPreferenceBackup($ccApp, $dest)
   {
     $dest = $dest.'/tmp';
     if (!is_dir($dest))
