@@ -20,9 +20,8 @@
         "ext-posix": "*",
         "symfony/yaml": "^4.4",
         "symfony/console": "^4.4",
-        "jonesiscoding/base-console": "^1.0",
         "rodneyrehm/plist": "^2.0",
-        "deviscoding/mac-console": "^1.2.2",
+        "deviscoding/mac-console": "^1.4",
         "symfony/process": "^4.4"
     }
 }
