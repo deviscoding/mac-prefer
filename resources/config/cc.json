@@ -2,7 +2,10 @@
   "illustrator": {
     "sap": "ILST",
     "names": [ "Illustrator", "Illustrator CC" ],
-    "preferences": ["Library/Preferences/Adobe Illustrator {baseVersion}"],
+    "preferences": [
+      "Library/Preferences/Adobe/Adobe Illustrator/{version}",
+      "Library/Preferences/Adobe Illustrator {majorVersion} Settings"
+    ],
     "path": "Adobe {name} {year}/Adobe Illustrator.app",
     "baseVersions": {
       "21.0.0": "2017",
@@ -31,7 +34,8 @@
     "path": "Adobe {name} {year}/Adobe {name} {year}.app",
     "preferences": [
       "Library/Preferences/Adobe {name} {year} Settings",
-      "Library/Preferences/Adobe {name} {year} Paths"
+      "Library/Preferences/Adobe {name} {year} Paths",
+      "Library/Preferences/Adobe/Photoshop/{baseVersion}"
     ],
     "baseVersions": {
       "18.0": "2017",

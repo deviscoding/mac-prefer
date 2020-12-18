@@ -110,9 +110,11 @@ class CreativeCloudApp implements \JsonSerializable
     {
       if (!empty($info['preferences']))
       {
+        $find    = ['{name}', '{year}', '{version}', '{baseVersion}', '{majorVersion}'];
+        $replace = [$this->getName(false), $this->getYear(), $this->getVersion(), $this->getBaseVersion(), $this->getMajorVersion()];
         foreach ($info['preferences'] as $pr)
         {
-          $prefs[] = str_replace(['{name}', '{year}', '{version}'], [$this->getName(false), $this->getYear(), $this->getBaseVersion()], $pr);
+          $prefs[] = str_replace($find, $replace, $pr);
         }
       }
     }
@@ -166,6 +168,11 @@ class CreativeCloudApp implements \JsonSerializable
     }
 
     return $this->version;
+  }
+
+  public function getMajorVersion()
+  {
+    return substr($this->getVersion(), 0, strpos($this->getVersion(), '.'));
   }
 
   /**

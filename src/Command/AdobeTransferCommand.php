@@ -139,9 +139,25 @@ class AdobeTransferCommand extends AbstractAdobeConsole
 
     // Version Replacement
     $this->io()->msg('Verifying Application Versions', 50);
-    $srcVer = $src->getBaseVersion();
-    $dstVer = $dst->getBaseVersion();
+    $srcVer = $src->getVersion();
+    $dstVer = $dst->getVersion();
     if (empty($srcVer) || empty($dstVer))
+    {
+      $this->io()->errorln('[ERROR]');
+
+      $this->io()->errorblk(sprintf('Could not verify versions for %s', $src->getName(false)));
+
+      return self::EXIT_ERROR;
+    }
+    else
+    {
+      $this->io()->successln('[DONE]');
+    }
+
+    $this->io()->msg('Verifying Application Base Versions', 50);
+    $srcBaseVer = $src->getBaseVersion();
+    $dstBaseVer = $dst->getBaseVersion();
+    if (empty($srcBaseVer) || empty($dstBaseVer))
     {
       $this->io()->errorln('[ERROR]');
 
@@ -188,9 +204,12 @@ class AdobeTransferCommand extends AbstractAdobeConsole
       $this->io()->successln('[DONE]');
     }
 
+    $srcMajor = substr($srcVer, 0, strpos($srcVer, '.'));
+    $dstMajor = substr($dstVer, 0, strpos($dstVer, '.'));
+
     // Prep Search & Replace
-    $search  = [$srcVer, $srcName];
-    $replace = [$dstVer, $dstName];
+    $search  = [$srcVer, $srcBaseVer, $srcName, $srcMajor];
+    $replace = [$dstVer, $dstBaseVer, $dstName, $dstMajor];
     if (!empty($srcYear))
     {
       $search[]  = $srcYear;
@@ -247,6 +266,12 @@ class AdobeTransferCommand extends AbstractAdobeConsole
       $dstPref = str_replace($search, $replace, $srcPref);
       $srcPath = sprintf('%s/%s', $uDir, $srcPref);
       $dstPath = sprintf('%s/%s', $uDir, $dstPref);
+
+      if ($this->io()->getOutput()->isDebug())
+      {
+        $this->io()->write('  From...', null, 10)->writeln($srcPath);
+        $this->io()->write('  To...', null, 10)->writeln($dstPath);
+      }
 
       if (file_exists($srcPath))
       {
